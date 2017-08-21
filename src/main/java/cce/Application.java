@@ -6,43 +6,57 @@ import cce.client.WSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.StringUtils;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import java.util.UUID;
 
 @SpringBootApplication
 public class Application {
-	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-	public static final String NAMESPACE_URI = "http://jnet.state.pa.us/message/aopc/CCERequestReply/1";
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+    public static final String NAMESPACE_URI = "http://jnet.state.pa.us/message/aopc/CCERequestReply/1";
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class);
+    }
+    @Value("${client.ws.user}")
+    String authenticatedUserId;
 
-	@Bean
-	CommandLineRunner lookup(@Autowired WSClient wsclient) {
-		return args -> {
-			if (args.length > 0) {
+    @Value("${client.ws.reply}")
+    String replyURI;
 
-			}
-			CourtCaseEventRequest request = new CourtCaseEventRequest();
-			request.setRequestMetadata("test.user", "capa", "https://uat.captorapi.cor.state.pa.us/cce/CCEReply.svc");
-			// Docket Number
-			// request.setDocketId("CP-25-CR-0002884-2016");
-			// Charge Tracking Id
-			request.setChargeTrackingId("T4504835");
-			QName qname = new QName(NAMESPACE_URI, "RequestCourtCaseEvent");
-			JAXBElement<CourtCaseEventResponse> responseJAXBElement = wsclient.queryByDocketId(new JAXBElement(qname, CourtCaseEventRequest.class, request));
-			CourtCaseEventResponse response = responseJAXBElement.getValue();
+    @Value("${client.ws.docketId}")
+    String docketId;
 
-			LOG.info("\n\n" + response.code + "\t" + response.description + "\n");
-			LOG.info("f" + args.length);
-		};
-	}
+    @Value("${client.ws.trackingId}")
+    String trackingId;
+
+    @Bean
+    CommandLineRunner lookup(@Autowired WSClient wsclient) {
+        return args -> {
+            CourtCaseEventRequest request = new CourtCaseEventRequest();
+            // Request metadata
+            request.setRequestMetadata(authenticatedUserId, UUID.randomUUID().toString(), replyURI);
+            // Docket Number or Charge Tracking Id
+            if (!StringUtils.isEmpty(docketId))
+                request.setDocketId(docketId);
+            else
+                request.setChargeTrackingId(trackingId);
+
+            LOG.info("\n\n" + request + "\n");
+
+            QName qname = new QName(NAMESPACE_URI, "RequestCourtCaseEvent");
+            JAXBElement<CourtCaseEventResponse> responseJAXBElement = wsclient.queryByDocketId(new JAXBElement(qname, CourtCaseEventRequest.class, request));
+            CourtCaseEventResponse response = responseJAXBElement.getValue();
+
+            LOG.info("\n\n" + response + "\n");
+        };
+    }
 
 }

@@ -16,4 +16,12 @@ public class CourtCaseEventResponse {
     @XmlElement(name = "ResponseStatusDescriptionText")
     public String description;
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("CCEResponse{");
+        sb.append("code='").append(code).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -97,13 +97,13 @@ public class ClientConfig {
     }
 
     @Bean
-    public WSClient getBeerClient(@Value("${client.ssl.trust-store-password}") String wsUrl,
+    public WSClient getCCERequestClient(@Value("${client.ws.url}") String wsUrl,
                                   @Autowired Wss4jSecurityInterceptor interceptor) throws Exception {
-        LOG.warn(wsUrl);
+        LOG.info("Building WSS Client");
         WSClient client = new WSClient();
         client.setMarshaller(getMarshaller());
         client.setUnmarshaller(getMarshaller());
-        client.setDefaultUri("https://ws.jnet.beta.pa.gov/AOPC/CCERequest");
+        client.setDefaultUri(wsUrl);
         ClientInterceptor[] interceptors = new ClientInterceptor[]{interceptor};
         client.setInterceptors(interceptors);
         return client;

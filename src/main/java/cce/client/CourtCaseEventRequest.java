@@ -1,5 +1,7 @@
 package cce.client;
 
+import org.springframework.util.StringUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,6 +24,13 @@ public class CourtCaseEventRequest {
         @XmlElement(name = "CaseDocketID", namespace = "http://niem.gov/niem/niem-core/2.0", required = true)
         public String docketId;
 
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("Docket{");
+            sb.append("docketId='").append(docketId).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
     }
 
     public void setDocketId(String identity) {
@@ -47,8 +56,14 @@ public class CourtCaseEventRequest {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class ChargeTrackingCriteria {
-        @XmlElement(name = "ChargeTrackingIdentification", namespace = "http://niem.gov/niem/domains/jxdm/4.0")
+        @XmlElement(name = "ChargeTrackingId", namespace = "http://niem.gov/niem/domains/jxdm/4.0")
         public ChargeTrackingIdentification trackingIdentification;
+
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer(trackingIdentification == null ? null : trackingIdentification.toString());
+            return sb.toString();
+        }
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -56,6 +71,10 @@ public class CourtCaseEventRequest {
         @XmlElement(name = "IdentificationID", namespace = "http://niem.gov/niem/niem-core/2.0")
         public String identity;
 
+        @Override
+        public String toString() {
+            return identity;
+        }
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -75,6 +94,27 @@ public class CourtCaseEventRequest {
         @XmlElement(name = "RequestAuthenticatedUserID")
         public String requestAuthenticatedUserID;
 
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("Req{");
+            if (!StringUtils.isEmpty(userDefinedTrackingID))
+                sb.append("userDefinedTrackingID='").append(userDefinedTrackingID).append('\'');
+            sb.append(", replyTo='").append(replyToAddressURI).append('\'');
+            if (!StringUtils.isEmpty(requestActionText))
+                sb.append(", requestAction='").append(requestActionText).append('\'');
+            sb.append(", userId='").append(requestAuthenticatedUserID).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("CCERequest{");
+        sb.append("Metadata=").append(requestMetadata);
+        sb.append(", docket=").append(docket);
+        sb.append(", chargeTracking=").append(chargeTracking);
+        sb.append('}');
+        return sb.toString();
+    }
 }
