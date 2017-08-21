@@ -1,0 +1,55 @@
+# Compilation folders #
+bin/
+target/
+build/
+
+# Java compile files #
+*.class
+*.jks
+
+# Package files #
+*.jar
+*.war
+*.ear
+*.db
+
+# Log files #
+/*.log
+/*.log.*
+
+
+# Eclipse files #
+.buildpath
+.classpath
+.cproject
+.externalToolBuilders/
+.launch
+.loadpath
+.metadata
+.project
+.settings/
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.nak
+*.swp
+*~.nib
+*.pydevproject
+local.properties
+.springBeans
+
+# IntelliJ Idea files #
+.idea
+*.iml
+
+# Windows files #
+Thumbs.db
+Desktop.ini
+
+# OS files #
+.DS_Store
+.svn
+._*
+.Spotlight-V100
+.Trashes
