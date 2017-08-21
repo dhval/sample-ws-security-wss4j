@@ -7,6 +7,7 @@ logging:
 client.ssl.trust-store: classpath:truststore.jks
 client.ssl.trust-store-password: changeit
 client.ssl.key-store: jems-client.jks
+client.ssl.key-store-alias: client
 client.ssl.key-store-password: changeit
 client.ws:
   url: 'https://ws.jnet.beta.pa.gov/AOPC/CCERequest'

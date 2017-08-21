@@ -1,37 +1,41 @@
 ## Spring WS-Security with WSS4J
 
-This is a working example of creating a SOAP service with X509 Token profile to sign the request using digital signatures.
+This is a working example of creating a SOAP service with X509 Token profile to sign the request using digital signatures (digSig).
 
 Spring WSS supports two implementations of WS-Security:[WSS4J][wss4j] and [XWSS][xwss], using [ClientInterceptor][client-interceptor] class.
 - Wss4jSecurityInterceptor.
 - XwsSecurityInterceptor.
 
-To make this sample as minimalist as possible I am using [WSS4j][wss4j] which is more portable, additionally other details like trustsstore, SAML [assertions][signed-custom-saml-assertion], encryption, JAXB XML are omitted. Still this could serve as a complete demo. For customizing see; [wss4j-config][wss4j-config].
+To make this sample working yet minimalist, I am using [WSS4j][wss4j] which is more portable, additionally other details like
+ trustsstore, Custom [SAML assertions][signed-custom-saml-assertion], encryption, JAXB/XJC configurations are omitted.
 
-Signature [Identifier][signature-identifiers]/ Profiles
+For customizing see; [wss4j-config][wss4j-config]. Below details are implemented in [ClientConfig.java][client-config].
+
+Signature Identifier [Profiles][signature-identifiers]
 ```
 // X509KeyIdentifier, DirectReference
-        securityInterceptor.setSecurementSignatureKeyIdentifier("DirectReference");
+securityInterceptor.setSecurementSignatureKeyIdentifier("DirectReference");
 ```
 
 Security Actions
 ```
 // Timestamp Signature SAMLTokenSigned SAMLTokenUnsigned
-        securityInterceptor.setSecurementActions("Timestamp Signature");
+securityInterceptor.setSecurementActions("Timestamp Signature");
 ```
 
 Signature Parts
 ```
 securityInterceptor.setSecurementSignatureParts(
-                "{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;" +
-                        "{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"
+    "{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;" +
+        "{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"
 ```
 
 [Sample WSS Outgoing Header][wss-header-sample]
 
 ### Creating keystore
 
-This example will need a jks store which is NOT included, you will need to create it using keytool;[screenshot][screenshot-keystore], [see][create-keystore].
+This example will need a java key store (jks) file [like][screenshot-keystore] which is NOT included, you will need to create it
+ using [keytool][create-keystore].
 
 ### Running this sample
 ```
@@ -50,6 +54,7 @@ The project has been released under the [MIT License][license]. Issues and sugge
 [screenshot-keystore]:https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/screenshot_keystore.png
 [screenshot-run]:https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/screenshot-run.png
 [wss-header-sample]: https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/wss-header-sample.xml
+[client-config]: https://github.com/dhval/sample-ws-security-wss4j/blob/master/src/main/java/cce/client/ClientConfig.java
 
 [ws-security]: https://www.oasis-open.org/committees/wss/
 [xwss]: https://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/tutorial/doc/XWS-SecurityIntro4.html

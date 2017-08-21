@@ -28,6 +28,15 @@ public class ClientConfig {
     @Value("${client.ssl.trust-store-password}")
     private String trustStorePassword;
 
+    @Value("${client.ssl.key-store}")
+    private Resource clientKs;
+
+    @Value("${client.ssl.key-store-password}")
+    private String clientKsPwd;
+
+    @Value("${client.ssl.key-store-alias}")
+    private String clientKsAlias;
+
     @Value("client.ws-url")
     private String wsUrl;
 
@@ -68,8 +77,8 @@ public class ClientConfig {
         securityInterceptor.setSecurementActions("Timestamp Signature");
 
         // sign the request
-        securityInterceptor.setSecurementUsername("client");
-        securityInterceptor.setSecurementPassword("changeit");
+        securityInterceptor.setSecurementUsername(clientKsAlias);
+        securityInterceptor.setSecurementPassword(clientKsPwd);
         securityInterceptor.setSecurementSignatureCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setSecurementSignatureParts(
                 "{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;" +
@@ -84,8 +93,8 @@ public class ClientConfig {
     @Bean
     public CryptoFactoryBean getCryptoFactoryBean() throws IOException {
         CryptoFactoryBean cryptoFactoryBean = new CryptoFactoryBean();
-        cryptoFactoryBean.setKeyStorePassword("changeit");
-        cryptoFactoryBean.setKeyStoreLocation(new ClassPathResource("jems-client.jks"));
+        cryptoFactoryBean.setKeyStorePassword(clientKsPwd);
+        cryptoFactoryBean.setKeyStoreLocation(clientKs);
         return cryptoFactoryBean;
     }
 
