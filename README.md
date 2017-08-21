@@ -2,11 +2,11 @@
 
 This is a working example of creating a SOAP service with X509 Token profile to sign the request using digital signatures.
 
-Spring WSS supports two implementations of WS-Security:[WSS4J][wss4j] and [XWSS][xwss], using [ClientInterceptor][client-interceptor]:
+Spring WSS supports two implementations of WS-Security:[WSS4J][wss4j] and [XWSS][xwss], using [ClientInterceptor][client-interceptor] class.
 - Wss4jSecurityInterceptor.
 - XwsSecurityInterceptor.
 
-To make this sample as minimalist as possible I am using [WSS4j][wss4j] which is more portable, additionally other details like trustsstore, SAML [assertions][signed-custom-saml-assertion], encryption, JAXB XML are omitted. Still this could serve as a complete demo. For customizing see [options][wss4j-config].
+To make this sample as minimalist as possible I am using [WSS4j][wss4j] which is more portable, additionally other details like trustsstore, SAML [assertions][signed-custom-saml-assertion], encryption, JAXB XML are omitted. Still this could serve as a complete demo. For customizing see; [wss4j-config][wss4j-config].
 
 Signature [Identifier][signature-identifiers]/ Profiles
 ```
@@ -60,4 +60,3 @@ The project has been released under the [MIT License][license]. Issues and sugge
 [signature-identifiers]: http://coheigea.blogspot.com/2013/03/signature-and-encryption-key.html
 [create-keystore]: http://memorynotfound.com/create-public-private-keystore-client-server/
 [signed-custom-saml-assertion]: http://jaminhitchcock.blogspot.com/2014/05/creating-and-validating-saml-assertions.html
-
