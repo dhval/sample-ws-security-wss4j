@@ -6,9 +6,9 @@ Spring WSS supports two implementations of WS-Security:[WSS4J][wss4j] and [XWSS]
 - Wss4jSecurityInterceptor.
 - XwsSecurityInterceptor.
 
-To make this sample as minimalist as possible I am using [WSS4j][wss4j] which is more portable, additionally other details like trustsstore, SAML assertions, JAXB XML are omitted. Still this could serve as a complete demo.
+To make this sample as minimalist as possible I am using [WSS4j][wss4j] which is more portable, additionally other details like trustsstore, SAML [assertions][signed-custom-saml-assertion], encryption, JAXB XML are omitted. Still this could serve as a complete demo. For customizing see [options][wss4j-config].
 
-Signature Identifier / Profile
+Signature [Identifier][signature-identifiers]/ Profiles
 ```
 // X509KeyIdentifier, DirectReference
         securityInterceptor.setSecurementSignatureKeyIdentifier("DirectReference");
@@ -27,9 +27,11 @@ securityInterceptor.setSecurementSignatureParts(
                         "{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"
 ```
 
+[Sample WSS Outgoing Header][wss-header-sample]
+
 ### Creating keystore
 
-This example will need a jks store which is NOT included, you will need to create it using keytool;[screenshot][screenshot-keystore].
+This example will need a jks store which is NOT included, you will need to create it using keytool;[screenshot][screenshot-keystore], [see][create-keystore].
 
 ### Running this sample
 ```
@@ -39,7 +41,7 @@ $ mvn clean spring-boot:run
 
 ### License
 
-The project has been released under the [MIT License][license]. Issues are managed at the GitHub[project issues tracker][issues]
+The project has been released under the [MIT License][license]. Issues and suggestions for this sample are welcome, [Tracker][issues]
 
 [scm]: https://github.com/dhval/sample-ws-security-wss4j
 [issues]: https://github.com/dhval/sample-ws-security-wss4j/issues
@@ -47,9 +49,15 @@ The project has been released under the [MIT License][license]. Issues are manag
 
 [screenshot-keystore]:https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/screenshot_keystore.png
 [screenshot-run]:https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/screenshot-run.png
+[wss-header-sample]: https://github.com/dhval/sample-ws-security-wss4j/blob/master/doc/wss-header-sample.xml
 
 [ws-security]: https://www.oasis-open.org/committees/wss/
 [xwss]: https://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/tutorial/doc/XWS-SecurityIntro4.html
 [wss4j]: https://ws.apache.org/wss4j/
+[wss4j-config]: https://ws.apache.org/wss4j/config.html
 [spring-ws]: http://projects.spring.io/spring-ws/
-[client-interceptor]: http://docs.spring.io/spring-ws/sites/1.5/apidocs/org/springframework/ws/client/support/interceptor/class-use/ClientInterceptor.html
+[client-interceptor]: https://github.com/spring-projects/spring-ws/blob/master/spring-ws-security/src/main/java/org/springframework/ws/soap/security/wss4j/Wss4jSecurityInterceptor.java
+[signature-identifiers]: http://coheigea.blogspot.com/2013/03/signature-and-encryption-key.html
+[create-keystore]: http://memorynotfound.com/create-public-private-keystore-client-server/
+[signed-custom-saml-assertion]: http://jaminhitchcock.blogspot.com/2014/05/creating-and-validating-saml-assertions.html
+
