@@ -1,4 +1,4 @@
-package cce.client;
+package wss4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
@@ -36,9 +35,6 @@ public class ClientConfig {
 
     @Value("${client.ssl.key-store-alias}")
     private String clientKsAlias;
-
-    @Value("client.ws-url")
-    private String wsUrl;
 
     @Bean
     public Boolean disableSSLValidation() throws Exception {
@@ -99,22 +95,20 @@ public class ClientConfig {
     }
 
     @Bean
-    public Jaxb2Marshaller getMarshaller(){
+    public Jaxb2Marshaller getMarshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setContextPath("cce.client");
         return marshaller;
     }
 
     @Bean
-    public WSClient getCCERequestClient(@Value("${client.ws.url}") String wsUrl,
-                                  @Autowired Wss4jSecurityInterceptor interceptor) throws Exception {
+    public WSClient createClient(@Value("${client.ws.url}") String wsUrl,
+                                 @Autowired Wss4jSecurityInterceptor interceptor) throws Exception {
         LOG.info("Building WSS Client");
         WSClient client = new WSClient();
-        client.setMarshaller(getMarshaller());
-        client.setUnmarshaller(getMarshaller());
-        client.setDefaultUri(wsUrl);
         ClientInterceptor[] interceptors = new ClientInterceptor[]{interceptor};
         client.setInterceptors(interceptors);
+        client.setUrl(wsUrl);
         return client;
     }
 

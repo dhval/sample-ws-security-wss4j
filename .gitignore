@@ -6,6 +6,7 @@ build/
 # Java compile files #
 *.class
 *.jks
+example.xml
 
 # Package files #
 *.jar
